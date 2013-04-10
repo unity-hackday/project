@@ -1,0 +1,31 @@
+K 10
+svn:ignore
+V 499
+ProjectSettings.asset
+ScriptMapper
+TagManager.asset
+TimeManager.asset
+unity default resources
+unity editor resources
+cache
+metadata
+ScriptAssemblies
+assetDatabase3
+assetservercachev3
+AssetVersioning.db
+AudioManager.asset
+BuildPlayer.prefs
+BuildSettings.asset
+DynamicsManager.asset
+EditorBuildSettings.asset
+EditorSettings.asset
+expandedItems
+FailedAssetImports.txt
+guidmapper
+InputManager.asset
+InspectorExpandedItems.asset
+MonoManager.asset
+NetworkManager.asset
+ProjectUsesCompressTexturesOnImport
+
+END
