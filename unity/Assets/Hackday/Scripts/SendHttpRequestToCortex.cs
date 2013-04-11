@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Net;
 using System.IO;
 using System.Threading;
@@ -24,8 +25,15 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 		GUI.Box(new Rect(10,10,100,90), "Loader Menu");
 		
 		if(GUI.Button(new Rect(20,40,80,20), "Login")) {
-			var httpResponse = SendRequst("http://10.10.121.110:8080/cortex/authentication/mobee/form","GET","");
+			
+			string json = "{\"username\":\"oliver.harris@elasticpath.com\"," +
+              "\"password\":\"password\"}";
+			string url = "http://10.10.121.110:8080/cortex/authentication/mobee";
+			
+			HttpWebResponse httpResponse = SendRequst(url,"POST",json);
 			Debug.Log(httpResponse.StatusCode);
+			
+			Debug.Log(getResponseBody(httpResponse));
 		}
 	}
 	
@@ -51,22 +59,29 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 		//Get Response
 		var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 		
-		//RequestState myRequestState = new RequestState();  
-		//myRequestState.request = httpWebRequest;
+		/*
+		RequestState myRequestState = new RequestState();  
+		myRequestState.request = httpWebRequest;
 		
-		//IAsyncResult result= (IAsyncResult) httpWebRequest.BeginGetResponse(new AsyncCallback(RespCallback),myRequestState);
+		IAsyncResult result= (IAsyncResult) httpWebRequest.BeginGetResponse(new AsyncCallback(RespCallback),myRequestState);
 		
 		// this line implements the timeout, if there is a timeout, the callback fires and the request becomes aborted
-		//ThreadPool.RegisterWaitForSingleObject (result.AsyncWaitHandle, new WaitOrTimerCallback(TimeoutCallback), httpWebRequest, DefaultTimeout, true);
+		ThreadPool.RegisterWaitForSingleObject (result.AsyncWaitHandle, new WaitOrTimerCallback(TimeoutCallback), httpWebRequest, DefaultTimeout, true);
 		
-		// The response came in the allowed time. The work processing will happen in the  
-		// callback function.
-		//allDone.WaitOne();
+		// The response came in the allowed time. The work processing will happen in the callback function.
+		allDone.WaitOne();
 		
 		// Release the HttpWebResponse resource.
-		//myRequestState.response.Close();
-		
+		myRequestState.response.Close();
+		*/
 		return httpResponse;
+	}
+	
+	String getResponseBody(HttpWebResponse response){
+		Stream responseStream = response.GetResponseStream();
+		Encoding enc = System.Text.Encoding.GetEncoding("utf-8");
+		StreamReader responseStreamReader = new StreamReader(responseStream,enc);
+		return responseStreamReader.ReadToEnd();
 	}
 
 	/*
