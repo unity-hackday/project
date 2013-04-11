@@ -8,9 +8,17 @@ using UnityEngine;
 // character is created.
 class Main : MonoBehaviour
 {
+	
+	//set in login screen
 	private string UserName = "User Name";
 	private string Password = "Password";
+	
 	int stage = 0;
+	
+	
+	//User names and passwords (even numbers = user name; odd numbers = password)
+	ArrayList users = new ArrayList();
+	
     CharacterGenerator generator;
     GameObject character;
     bool usingLatestConfig;
@@ -22,7 +30,11 @@ class Main : MonoBehaviour
     const int typeWidth = 80;
     const int buttonWidth = 20;
     const string prefName = "Character Generator Demo Pref";
-
+	void Start()
+	{
+		users.Add("user");
+		users.Add("123");
+	}
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
@@ -85,11 +97,12 @@ class Main : MonoBehaviour
             character.animation.CrossFade(nonLoopingAnimationToPlay, fadeLength);
             nonLoopingAnimationToPlay = null;
         }
+ 
     }
 
     void OnGUI()
     {
-		if (stage == 0)
+		if (stage == 0) //Stage 0 is the login screen
 		{
 			// Make a background box
 			GUI.backgroundColor = Color.black;
@@ -103,59 +116,81 @@ class Main : MonoBehaviour
 			// Make the first button. 
 			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
 			{
-				stage = 1;
+				if (UserName == "User Name" || Password == "Password") //no user name or password selected.
+				{
+					stage = 0;
+				}
+				else 
+				{
+					for (int i=0;i<users.Count;i=i+2)
+					{
+						if (users[i] == UserName || users[i+1] == Password)
+						{
+							stage = 1; 
+					
+						}
+						else
+						{
+							stage = 1;
+						}
+					}
+				}
 			}
+		} //end of stage 0
+		
 		}
 		
-		if(stage == 1)
+		if(stage == 1) //stage 1 is the character selection screen
 		{
-        if (generator == null) return;
-        GUI.enabled = usingLatestConfig && !character.animation.IsPlaying("walkin");
-        GUILayout.BeginArea(new Rect(10, 10, typeWidth + 2 * buttonWidth + 8, 500));
-
-        // Buttons for changing the active character.
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("<", GUILayout.Width(buttonWidth)))
-            ChangeCharacter(false);
-
-        GUILayout.Box("Character", GUILayout.Width(typeWidth));
-
-        if (GUILayout.Button(">", GUILayout.Width(buttonWidth)))
-            ChangeCharacter(true);
-
-        GUILayout.EndHorizontal();
-
-        // Buttons for changing character elements.
-        AddCategory("face", "Head", null);
-        AddCategory("eyes", "Eyes", null);
-        AddCategory("hair", "Hair", null);
-        AddCategory("top", "Body", "item_shirt");
-        AddCategory("pants", "Legs", "item_pants");
-        AddCategory("shoes", "Feet", "item_boots");
-
-        // Buttons for saving and deleting configurations.
-        // In a real world application you probably want store these
-        // preferences on a server, but for this demo configurations 
-        // are saved locally using PlayerPrefs.
-        if (GUILayout.Button("Save Configuration"))
-            PlayerPrefs.SetString(prefName, generator.GetConfig());
-
-        if (GUILayout.Button("Delete Configuration"))
-            PlayerPrefs.DeleteKey(prefName);
-
-        // Show download progress or indicate assets are being loaded.
-        GUI.enabled = true;
-        if (!usingLatestConfig)
-        {
-            float progress = generator.CurrentConfigProgress;
-            string status = "Loading";
-            if (progress != 1) status = "Downloading " + (int)(progress * 100) + "%";
-            GUILayout.Box(status);
-        }
-
-        GUILayout.EndArea();
-    }
+	        if (generator == null) return;
+	        GUI.enabled = usingLatestConfig && !character.animation.IsPlaying("walkin");
+	        GUILayout.BeginArea(new Rect(10, 10, typeWidth + 2 * buttonWidth + 8, 500));
+	
+	        // Buttons for changing the active character.
+	        GUILayout.BeginHorizontal();
+	
+	        if (GUILayout.Button("<", GUILayout.Width(buttonWidth)))
+	            ChangeCharacter(false);
+	
+	        GUILayout.Box("Character", GUILayout.Width(typeWidth));
+	
+	        if (GUILayout.Button(">", GUILayout.Width(buttonWidth)))
+	            ChangeCharacter(true);
+	
+	        GUILayout.EndHorizontal();
+	
+	        // Buttons for changing character elements.
+	        AddCategory("face", "Head", null);
+	        AddCategory("eyes", "Eyes", null);
+	        AddCategory("hair", "Hair", null);
+	        AddCategory("top", "Body", "item_shirt");
+	        AddCategory("pants", "Legs", "item_pants");
+	        AddCategory("shoes", "Feet", "item_boots");
+	
+	        // Buttons for saving and deleting configurations.
+	        // In a real world application you probably want store these
+	        // preferences on a server, but for this demo configurations 
+	        // are saved locally using PlayerPrefs.
+	        if (GUILayout.Button("Save Configuration"))
+	            PlayerPrefs.SetString(prefName, generator.GetConfig());
+	
+	        if (GUILayout.Button("Delete Configuration"))
+	            PlayerPrefs.DeleteKey(prefName);
+	
+	        // Show download progress or indicate assets are being loaded.
+	        GUI.enabled = true;
+	        if (!usingLatestConfig)
+	        {
+	            float progress = generator.CurrentConfigProgress;
+	            string status = "Loading";
+	            if (progress != 1) status = "Downloading " + (int)(progress * 100) + "%";
+	            GUILayout.Box(status);
+	        }
+	
+	        GUILayout.EndArea();
+			GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Enter Store");
+			
+	    }//end of stage 1
 	}
 
     // Draws buttons for configuring a specific category of items, like pants or shoes.
