@@ -138,7 +138,7 @@ class Main : MonoBehaviour
 			}
 		} //end of stage 0
 		
-		}
+		
 		
 		if(stage == 1) //stage 1 is the character selection screen
 		{
