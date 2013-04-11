@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 // This MonoBehaviour is responsible for controlling the CharacterGenerator,
@@ -13,7 +13,7 @@ class Main : MonoBehaviour
 	private string UserName = "User Name";
 	private string Password = "Password";
 	
-	int stage = 0;
+	public int stage = 0;
 	
 	
 	//User names and passwords (even numbers = user name; odd numbers = password)
@@ -127,11 +127,13 @@ class Main : MonoBehaviour
 						stage = 1; 
 					
 					}
+
 					else
 					{
 						//stage = 0;
 						GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
 					}
+
 					
 								
 			}
@@ -188,9 +190,13 @@ class Main : MonoBehaviour
 	
 	        GUILayout.EndArea();
 	        
-			if(GUI.Button(new Rect(Screen.width-80,Screen.height-20,80,20), "Enter Store"))
+
+			if(GUI.Button(new Rect(Screen.width-80,Screen.height-80,80,80), "Enter Store"))
+
 			{
-				stage = 3;
+				StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();
+				sf.StoreFrontEnabled = true;
+				stage = 2;
 			}
 			
 	    }//end of stage 1
