@@ -30,11 +30,9 @@ class Main : MonoBehaviour
     const int typeWidth = 80;
     const int buttonWidth = 20;
     const string prefName = "Character Generator Demo Pref";
-	void Start()
-	{
-		users.Add("user");
-		users.Add("123");
-	}
+	
+	
+	
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
@@ -43,6 +41,7 @@ class Main : MonoBehaviour
             generator = CharacterGenerator.CreateWithConfig(PlayerPrefs.GetString(prefName));
         else
             generator = CharacterGenerator.CreateWithRandomConfig("Female");
+
     }
 
     // Requests a new character when the required assets are loaded, starts
@@ -102,8 +101,11 @@ class Main : MonoBehaviour
 
     void OnGUI()
     {
+		
 		if (stage == 0) //Stage 0 is the login screen
 		{
+			users.Add("user");
+			users.Add("123");
 			// Make a background box
 			GUI.backgroundColor = Color.black;
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
