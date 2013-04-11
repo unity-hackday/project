@@ -4,52 +4,20 @@ using JsonExSerializer;
 
 public class JSONExample : MonoBehaviour {
 	
-	public class Customer {
-        private int _id;
-        private string _firstName;
-        private string _lastName;
-        private string _phoneNumber;
-
-        public int Id
-        {
-            get { return this._id; }
-            set { this._id = value; }
-        }
-
-        public string FirstName
-        {
-            get { return this._firstName; }
-            set { this._firstName = value; }
-        }
-
-        public string LastName
-        {
-            get { return this._lastName; }
-            set { this._lastName = value; }
-        }
-
-        public string PhoneNumber
-        {
-            get { return this._phoneNumber; }
-            set { this._phoneNumber = value; }
-        }
-    }
-	
 	void Start() {
 		// customer
-	    Customer customer = new Customer();
-	    customer.Id = 1;
-	    customer.FirstName = "Bob";
-	   	customer.LastName = "Smith";
-	    customer.PhoneNumber = "(222)444-9987";
+		RequestUser user = new RequestUser();
+		user.Username = "oliver.harris@elasticpath.com";
+		user.Password = "password";
 	
 	    // serialize to a string
-	    Serializer serializer = new Serializer(typeof(Customer));
+	    Serializer serializer = new Serializer(typeof(RequestUser));
 		//**** JSON Text **** 
-	    string jsonText = serializer.Serialize(customer);
+	    string jsonText = serializer.Serialize(user);
 	    Debug.Log(jsonText);
 		
 		// **** JSON to object 
-		Customer deserializedCustomer = (Customer) serializer.Deserialize(jsonText);
+		RequestUser deserializedUser = (RequestUser) serializer.Deserialize(jsonText);
+		Debug.Log("Username: " + deserializedUser.Username + " Password: " + deserializedUser.Password);
 	}
 }
