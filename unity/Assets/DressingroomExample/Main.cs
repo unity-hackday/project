@@ -101,7 +101,10 @@ class Main : MonoBehaviour
 			Password = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-30, 200, 20),Password, 25);
 			
 			// Make the first button. 
-			GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login");
+			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
+			{
+				stage = 1;
+			}
 		}
 		
 		if(stage == 1)
