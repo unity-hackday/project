@@ -8,6 +8,9 @@ using UnityEngine;
 // character is created.
 class Main : MonoBehaviour
 {
+	private string UserName = "User Name";
+	private string Password = "Password";
+	int stage = 0;
     CharacterGenerator generator;
     GameObject character;
     bool usingLatestConfig;
@@ -86,6 +89,23 @@ class Main : MonoBehaviour
 
     void OnGUI()
     {
+		if (stage == 0)
+		{
+			// Make a background box
+			GUI.backgroundColor = Color.black;
+			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
+			
+			//make login text fields
+			GUI.backgroundColor = Color.gray;
+			UserName = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-60, 200, 20),UserName, 25);
+			Password = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-30, 200, 20),Password, 25);
+			
+			// Make the first button. 
+			GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login");
+		}
+		
+		if(stage == 1)
+		{
         if (generator == null) return;
         GUI.enabled = usingLatestConfig && !character.animation.IsPlaying("walkin");
         GUILayout.BeginArea(new Rect(10, 10, typeWidth + 2 * buttonWidth + 8, 500));
@@ -133,6 +153,7 @@ class Main : MonoBehaviour
 
         GUILayout.EndArea();
     }
+	}
 
     // Draws buttons for configuring a specific category of items, like pants or shoes.
     void AddCategory(string category, string displayName, string anim)
