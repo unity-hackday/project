@@ -118,25 +118,20 @@ class Main : MonoBehaviour
 			// Make the first button. 
 			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
 			{
-				if (UserName == "User Name" || Password == "Password") //no user name or password selected.
+				
+				for (int i=0;i<users.Count;i=i+2)
 				{
-					stage = 0;
-				}
-				else 
-				{
-					for (int i=0;i<users.Count;i=i+2)
+					if (users[i] == UserName || users[i+1] == Password)
 					{
-						if (users[i] == UserName || users[i+1] == Password)
-						{
-							stage = 1; 
+						stage = 1; 
 					
-						}
-						else
-						{
-							stage = 1;
-						}
 					}
-				}
+					else
+					{
+						stage = 0;
+						GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
+					}
+				}				
 			}
 		} //end of stage 0
 		
@@ -190,7 +185,10 @@ class Main : MonoBehaviour
 	        }
 	
 	        GUILayout.EndArea();
-			GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Enter Store");
+			if(GUI.Button(new Rect(Screen.width-80,Screen.height-20,80,20), "Enter Store"))
+			{
+				stage = 3;
+			}
 			
 	    }//end of stage 1
 	}
