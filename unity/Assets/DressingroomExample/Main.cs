@@ -31,11 +31,12 @@ class Main : MonoBehaviour
     const int buttonWidth = 20;
     const string prefName = "Character Generator Demo Pref";
 	
-	
+
 	
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
+
         while (!CharacterGenerator.ReadyToUse) yield return 0;
         if (PlayerPrefs.HasKey(prefName))
             generator = CharacterGenerator.CreateWithConfig(PlayerPrefs.GetString(prefName));
@@ -104,8 +105,7 @@ class Main : MonoBehaviour
 		
 		if (stage == 0) //Stage 0 is the login screen
 		{
-			users.Add("user");
-			users.Add("123");
+
 			// Make a background box
 			GUI.backgroundColor = Color.black;
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
@@ -118,20 +118,22 @@ class Main : MonoBehaviour
 			// Make the first button. 
 			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
 			{
+				users.Add("user");
+				users.Add("123");
 				
-				for (int i=0;i<users.Count;i=i+2)
-				{
-					if (users[i] == UserName || users[i+1] == Password)
+
+					if (UserName=="user" && Password == "123")
 					{
 						stage = 1; 
 					
 					}
 					else
 					{
-						stage = 0;
+						//stage = 0;
 						GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
 					}
-				}				
+					
+								
 			}
 		} //end of stage 0
 		
@@ -185,6 +187,7 @@ class Main : MonoBehaviour
 	        }
 	
 	        GUILayout.EndArea();
+	        
 			if(GUI.Button(new Rect(Screen.width-80,Screen.height-20,80,20), "Enter Store"))
 			{
 				stage = 3;
