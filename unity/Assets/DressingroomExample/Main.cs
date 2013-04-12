@@ -39,6 +39,8 @@ class Main : MonoBehaviour
 	public bool legUnlock = false;
 	public bool shoeUnlock = false;
 	
+	public PurchaseResponse response =null;
+	
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
@@ -201,6 +203,16 @@ class Main : MonoBehaviour
 			}
 			
 	    }//end of stage 1
+		
+		if(stage==5){
+			int confirmButtonX = Screen.width/2-80;
+			int confirmButtonY = Screen.height/2;
+			GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "OK!");
+			
+			if(GUI.Button(new Rect(confirmButtonX+120,confirmButtonY+20,80,40), "Contiune.")){
+				stage =1 ;
+			}
+		}
 	}
 	
 	void TestGUI() {

@@ -17,7 +17,7 @@ public class OrderConfirm : MonoBehaviour {
 		string priceOfPants = "$1.00";
 		string priceOfShoes = "$1.00";
 		string priceOfAll = "$3.00";
-		
+		PurchaseResponse response;
 		if (packNumber != 0)
 		{
 			string itemId = "";
@@ -42,12 +42,15 @@ public class OrderConfirm : MonoBehaviour {
 				{
 					if (packNumber.Equals(1)) {
 						itemId = PurchaseCurrentOutfit.PurchaseItem("tops");
+						response = DoPurchase(itemId);
 					} else if (packNumber.Equals (2)) {
-						itemId = PurchaseCurrentOutfit.PurchaseItem("pants");					
+						itemId = PurchaseCurrentOutfit.PurchaseItem("pants");	
+						response = DoPurchase(itemId);
 					} else if (packNumber.Equals (3)) {
-						itemId = PurchaseCurrentOutfit.PurchaseItem("shoes");					
-					} else if (packNumber.Equals (4)) {
-					
+						itemId = PurchaseCurrentOutfit.PurchaseItem("shoes");	
+						response = DoPurchase(itemId);
+					//} else if(packNumber.Equals (4)) {
+					} else {
 						Main main = GameObject.Find("GameObject").GetComponent<Main>();
 						string access_token = main.auth.access_token;
 						
@@ -62,32 +65,31 @@ public class OrderConfirm : MonoBehaviour {
 						AddToCart.AddItemToCart(topsId, access_token);
 						AddToCart.AddItemToCart(pantsId, access_token);
 						AddToCart.AddItemToCart(shoesId, access_token);
+						AddToCart.setShippingOptionInfoIfNeeded(access_token);
 					
-						AddToCart.Purchase(access_token);
-					
-					}
-					if(!itemId.Equals("")) {
-						DoPurchase(itemId);
+						response = AddToCart.Purchase(access_token);
 					}
 					packNumber = 0;
 					Main back = GameObject.Find("GameObject").GetComponent<Main>();
-					back.stage = 1;
-				}
+					back.response = response;
+					back.stage = 5;
+			}
 			if(GUI.Button(new Rect(confirmButtonX+120,confirmButtonY+20,80,40), "Cancel"))
-				{
-					packNumber = 0;
-					StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();
-					sf.StoreFrontEnabled = true;
-				}
+			{
+				packNumber = 0;
+				StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();
+				sf.StoreFrontEnabled = true;
+			}
 		}
 	}
+	
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
 	
-	void DoPurchase(string itemId) {
+	PurchaseResponse DoPurchase(string itemId) {
 		Main main = GameObject.Find("GameObject").GetComponent<Main>();
 		string access_token = main.auth.access_token;
 		Debug.Log(access_token);
@@ -102,6 +104,6 @@ public class OrderConfirm : MonoBehaviour {
 		
 		// ***** NOTE *******
 		// THIS WILL FAIL IF ITEM IS SHIPPABLE, WILL ENCOUNTER A NEEDINFO 
-		AddToCart.Purchase(access_token);
+		return AddToCart.Purchase(access_token);
 	}
 }
