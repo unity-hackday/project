@@ -22,8 +22,9 @@ public class AddToCart {
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "GET", quantityJsonForm, AuthToken);
 		
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
+	   	Debug.Log(responseJSON);
 		
-	   	Serializer responseSerializer = new Serializer(typeof(Response));
+		Serializer responseSerializer = new Serializer(typeof(Response));
 		Response response = (Response) responseSerializer.Deserialize(responseJSON);
 		
 		Debug.Log("Self.type: " + response.self.type);
@@ -35,7 +36,17 @@ public class AddToCart {
 	public static string GetOrderId (string AuthToken){
 		Response cartResponse = GetCartResponse(AuthToken);
 		
-		string orderUrl = cartResponse.links[2].uri;
+		string orderUri = null;
+		foreach (Response.Links linkObj in cartResponse.links) {
+			if(linkObj.rel.Equals("order")) {
+				orderUri = linkObj.uri;
+			}
+		}
+		
+		//string orderUrl = cartResponse.links[2].uri;
+		string orderUrl = orderUri;
+		
+		Debug.Log(orderUrl);
 		char[] seperators = new char[] {'/'};
 		string[] orderUrlTokens = orderUrl.Split(seperators);
 		
@@ -51,5 +62,6 @@ public class AddToCart {
 		
 		Debug.Log(httpResponse.StatusCode);
 	}
+
 }
 

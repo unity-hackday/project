@@ -42,6 +42,25 @@ public class OrderConfirm : MonoBehaviour {
 						itemId = PurchaseCurrentOutfit.PurchaseItem("pants");					
 					} else if (packNumber.Equals (3)) {
 						itemId = PurchaseCurrentOutfit.PurchaseItem("shoes");					
+					} else if (packNumber.Equals (4)) {
+					
+						Main main = GameObject.Find("GameObject").GetComponent<Main>();
+						string access_token = main.auth.access_token;
+						
+						string topsId = PurchaseCurrentOutfit.PurchaseItem("tops");
+						string pantsId = PurchaseCurrentOutfit.PurchaseItem("pants");
+						string shoesId = PurchaseCurrentOutfit.PurchaseItem("shoes");
+					
+						Debug.Log(topsId);
+						Debug.Log(pantsId);
+						Debug.Log(shoesId);
+					
+						AddToCart.AddItemToCart(topsId, access_token);
+						AddToCart.AddItemToCart(pantsId, access_token);
+						AddToCart.AddItemToCart(shoesId, access_token);
+					
+						AddToCart.Purchase(access_token);
+					
 					}
 					if(!itemId.Equals("")) {
 						DoPurchase(itemId);

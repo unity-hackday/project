@@ -204,12 +204,12 @@ class Main : MonoBehaviour
 	void LoginScreen() {
 		// Make a background box
 		GUI.backgroundColor = Color.black;
-		GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
+		GUI.Box(new Rect(Screen.width/2-110,Screen.height/2-100,300,140), "Welcome, Please Log In");
 		
 		//make login text fields
 		GUI.backgroundColor = Color.gray;
-		UserName = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-60, 200, 20),UserName, 50);
-		Password = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-30, 200, 20),Password, 50);
+		UserName = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-60, 200, 20),UserName, 50);
+		Password = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password, 50);
 		
 		// Make the first button. 
 		if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
@@ -232,7 +232,7 @@ class Main : MonoBehaviour
 			//Debug.Log(jsonText);
 			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url,"POST",jsonText,authToken);
 			
-			//Debug.Log(httpResponse.StatusCode);
+			Debug.Log(httpResponse.StatusCode);
 			/*
 			users.Add("user");
 			users.Add("123");

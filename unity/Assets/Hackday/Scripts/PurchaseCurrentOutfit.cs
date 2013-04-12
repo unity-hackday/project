@@ -64,7 +64,7 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		
 		FindCharacter ();
 		string itemName = characterSkin.materials[itemMaterialIndex].name;
-		
+		Debug.Log(itemName);
 		string itemId = SearchForItem (itemName);	
 		return itemId;
 	}
@@ -76,7 +76,7 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		string url = "http://10.10.121.110:8080/cortex/searches/unity/keywords/items?followLocation";
 	
 		RequestItemSearch requestObj = new RequestItemSearch ();
-		requestObj.keywords = characterSkin.materials[5].name;
+		requestObj.keywords = itemName;
 		requestObj.pagesize = 5;
 		requestObj.keywords = requestObj.keywords.Replace(" (Instance)","");
 		//Debug.Log(requestObj.username + requestObj.password);
