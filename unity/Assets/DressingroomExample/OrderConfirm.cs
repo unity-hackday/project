@@ -36,7 +36,9 @@ public class OrderConfirm : MonoBehaviour {
 			
 			if(GUI.Button(new Rect(Screen.width/2-80,Screen.height/2,80,80), "Confirm"))
 				{
-					DoPurchase(itemId);
+					if(!itemId.Equals("")) {
+						DoPurchase(itemId);
+					}
 					
 					packNumber = 0;
 					Main back = GameObject.Find("GameObject").GetComponent<Main>();
