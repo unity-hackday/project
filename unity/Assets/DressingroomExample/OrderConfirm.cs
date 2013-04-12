@@ -92,7 +92,14 @@ public class OrderConfirm : MonoBehaviour {
 		string access_token = main.auth.access_token;
 		Debug.Log(access_token);
 		//string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
+		
+		//Add Item to Cart
 		AddToCart.AddItemToCart(itemId, access_token);
+		
+		AddToCart.setShippingOptionInfoIfNeeded(access_token);
+		
+		//Debug.Log(AddToCart.GetOrderId (access_token));
+		
 		// ***** NOTE *******
 		// THIS WILL FAIL IF ITEM IS SHIPPABLE, WILL ENCOUNTER A NEEDINFO 
 		AddToCart.Purchase(access_token);
