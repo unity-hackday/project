@@ -30,13 +30,13 @@ public class Unlock : MonoBehaviour {
 
 			GUI.Box(new Rect(0,0,Screen.width,90), "Select product(s) for unlocking:");
 			
-			if(GUI.Button(new Rect(anchorX,anchorY,120,40), "Unlock Body $1"))
+			if(GUI.Button(new Rect(anchorX,anchorY,120,40), "Unlock Tops $1"))
 			{
 				UnlockEnabled = false;
 				UnlockConfirm checkout = GameObject.Find("UnlockConfirm").GetComponent<UnlockConfirm>();
 				checkout.packNumber = 1;
 			}
-			if(GUI.Button(new Rect(anchorX+spacing,anchorY,120,40), "Unlock Legs $1"))
+			if(GUI.Button(new Rect(anchorX+spacing,anchorY,120,40), "Unlock Pants $1"))
 			{
 				UnlockEnabled = false;
 				UnlockConfirm checkout = GameObject.Find("UnlockConfirm").GetComponent<UnlockConfirm>();

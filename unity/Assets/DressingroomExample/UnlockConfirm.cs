@@ -21,12 +21,12 @@ public class UnlockConfirm : MonoBehaviour {
 			string itemId = "";
 			if (packNumber ==1)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Body for $1?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Tops for $1?");
 				toBeUnlocked = 1;
 			}
 			else if (packNumber ==2)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Legs for $1?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Pants for $1?");
 				toBeUnlocked = 2;
 			}
 			else if (packNumber==3)

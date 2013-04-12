@@ -150,17 +150,17 @@ class Main : MonoBehaviour
 			if(!bodyUnlock){
 				GUI.enabled = false;	
 			}
-			AddCategory("top", "Body", "item_shirt");
+			AddCategory("top", "Tops", "item_shirt");
 			GUI.enabled = true;
 			if(!legUnlock){
 				GUI.enabled = false;
 			}
-	        AddCategory("pants", "Legs", "item_pants");
+	        AddCategory("pants", "Pants", "item_pants");
 			GUI.enabled = true;
 			if(!shoeUnlock){
 				GUI.enabled = false;
 			}
-	        AddCategory("shoes", "Feet", "item_boots");
+	        AddCategory("shoes", "Shoes", "item_boots");
 			GUI.enabled = true;
 	
 	        // Buttons for saving and deleting configurations.

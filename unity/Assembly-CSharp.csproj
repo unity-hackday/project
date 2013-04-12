@@ -55,6 +55,7 @@
      <Compile Include="Assets\DressingroomExample\Unlock.cs" />
      <Compile Include="Assets\DressingroomExample\UnlockConfirm.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\JSONExample.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\PurchaseResponse.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\RequestItemSearch.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\RequestUser.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\Response.cs" />
@@ -65,6 +66,12 @@
      <Compile Include="Assets\Hackday\Scripts\MaterialReferences.cs" />
      <Compile Include="Assets\Hackday\Scripts\PurchaseCurrentOutfit.cs" />
      <Compile Include="Assets\Hackday\Scripts\SendHttpRequestToCortex.cs" />
+     <Compile Include="Assets\KarenTest\CloneCharacter.cs" />
+     <Compile Include="Assets\KarenTest\CloneWalk.cs" />
+     <Compile Include="Assets\KarenTest\KarenTextureTest.cs" />
+     <Compile Include="Assets\KarenTest\PurchaseOutfit.cs" />
+     <Compile Include="Assets\KarenTest\TestGUI.cs" />
+     <Compile Include="Assets\KarenTest\TestScript.cs" />
      <None Include="Assets\DressingroomExample\Glow\GlowEffectDownsample.shader" />
      <None Include="Assets\DressingroomExample\MirrorReflection\MirrorReflection.shader" />
  <Reference Include="JsonExSerializer">
