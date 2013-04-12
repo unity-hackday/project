@@ -15,7 +15,7 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 	// Materials[5] = Tops
 	
 	
-	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
+	private static string cortexServerUrl = "http://10.10.121.110:8080/cortex";
 	
 	void PurchaseSelectedOutfit () {
 //		string url = cortexServerUrl + "/carts/" + storeScope + "/default";
@@ -64,7 +64,6 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		
 		FindCharacter ();
 		string itemName = characterSkin.materials[itemMaterialIndex].name;
-		Debug.Log(itemName);
 		string itemId = SearchForItem (itemName);	
 		return itemId;
 	}
@@ -90,8 +89,6 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", jsonText, mainRef.auth.access_token);
 		
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
-		Debug.Log(httpResponse.StatusCode);
-		Debug.Log(responseJSON);
 		
 		Serializer responseSerializer = new Serializer (typeof(ResponseSearch));
 		ResponseSearch responseSearchObj = (ResponseSearch) responseSerializer.Deserialize(responseJSON);
@@ -105,4 +102,35 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		return itemUriTokens[3];
 	}
 	
+	public static string FindItemPrice (string itemId) {
+		string reqURL = cortexServerUrl + "/items/unity/" + itemId; 
+		Main main = GameObject.Find("GameObject").GetComponent<Main>();
+		
+		HttpWebResponse response = SendHttpRequestToCortex.SendRequest(reqURL, "GET", "{}", main.auth.access_token);
+		
+		string responseJSON = SendHttpRequestToCortex.GetResponseBody(response);
+		Debug.Log(response.StatusCode);
+		Debug.Log(responseJSON);
+		
+		Serializer responseSerializer = new Serializer (typeof(Response));
+		Response responseObject = (Response) responseSerializer.Deserialize(responseJSON);
+		
+		string priceHref = null;
+		foreach (Response.Links linkObj in responseObject.links) {
+			if(linkObj.rel.Equals("price")) {
+				priceHref = linkObj.href;
+			}
+		}
+		
+		HttpWebResponse priceResponse = SendHttpRequestToCortex.SendRequest(priceHref, "GET", "{}", main.auth.access_token);
+		string priceJSONResponse = SendHttpRequestToCortex.GetResponseBody (priceResponse);
+		
+		
+		Serializer priceSerializer = new Serializer(typeof(ResponsePrice));
+		priceJSONResponse.Replace("purchase-price","purchaseprice");
+		ResponsePrice priceObject = (ResponsePrice) priceSerializer.Deserialize(priceJSONResponse);
+		
+		return priceObject.purchasePrice[0].display;
+		
+	}
 }
