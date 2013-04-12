@@ -37,24 +37,37 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Billy\TextureTest.cs" />
+     <Compile Include="Assets\DressingroomExample\AddToCart.cs" />
      <Compile Include="Assets\DressingroomExample\Glow\GlowEffect.cs" />
      <Compile Include="Assets\DressingroomExample\Glow\ImageEffects.cs" />
      <Compile Include="Assets\DressingroomExample\Main.cs" />
      <Compile Include="Assets\DressingroomExample\MirrorReflection\MirrorReflection.cs" />
+     <Compile Include="Assets\DressingroomExample\OrderConfirm.cs" />
      <Compile Include="Assets\DressingroomExample\StoreFront.cs" />
+     <Compile Include="Assets\DressingroomExample\Unlock.cs" />
+     <Compile Include="Assets\DressingroomExample\UnlockConfirm.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\JSONExample.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\RequestItemSearch.cs" />
      <Compile Include="Assets\Hackday\Scripts\JSON\RequestUser.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\Response.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\ResponseAuthentication.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\ResponsePaymentShippingSelector.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\ResponsePrice.cs" />
+     <Compile Include="Assets\Hackday\Scripts\JSON\ResponseSearch.cs" />
+     <Compile Include="Assets\Hackday\Scripts\MaterialReferences.cs" />
+     <Compile Include="Assets\Hackday\Scripts\PurchaseCurrentOutfit.cs" />
      <Compile Include="Assets\Hackday\Scripts\SendHttpRequestToCortex.cs" />
      <None Include="Assets\DressingroomExample\Glow\GlowEffectDownsample.shader" />
      <None Include="Assets\DressingroomExample\MirrorReflection\MirrorReflection.shader" />
- <Reference Include="Assets\Hackday\Plugins\JsonExSerializer">
+ <Reference Include="JsonExSerializer">
  <HintPath>Assets\Hackday\Plugins\JsonExSerializer.dll</HintPath>
  </Reference>
   </ItemGroup>
