@@ -231,7 +231,8 @@ class Main : MonoBehaviour
 		//make login text fields
 		GUI.backgroundColor = Color.gray;
 		UserName = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-60, 200, 20),UserName, 50);
-		Password = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password, 50);
+		//Password = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password, 50);
+		Password = GUI.PasswordField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password,"*"[0], 50);
 		
 		// Make the first button. 
 		if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
