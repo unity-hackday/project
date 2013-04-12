@@ -35,7 +35,9 @@ class Main : MonoBehaviour
     const int buttonWidth = 20;
     const string prefName = "Character Generator Demo Pref";
 	
-
+	public bool bodyUnlock = false;
+	public bool legUnlock = false;
+	public bool shoeUnlock = false;
 	
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
@@ -143,9 +145,21 @@ class Main : MonoBehaviour
 	        AddCategory("face", "Head", null);
 	        AddCategory("eyes", "Eyes", null);
 	        AddCategory("hair", "Hair", null);
-	        AddCategory("top", "Body", "item_shirt");
+			if(!bodyUnlock){
+				GUI.enabled = false;	
+			}
+			AddCategory("top", "Body", "item_shirt");
+			GUI.enabled = true;
+			if(!legUnlock){
+				GUI.enabled = false;
+			}
 	        AddCategory("pants", "Legs", "item_pants");
+			GUI.enabled = true;
+			if(!shoeUnlock){
+				GUI.enabled = false;
+			}
 	        AddCategory("shoes", "Feet", "item_boots");
+			GUI.enabled = true;
 	
 	        // Buttons for saving and deleting configurations.
 	        // In a real world application you probably want store these

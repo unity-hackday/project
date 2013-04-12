@@ -11,8 +11,10 @@ public class UnlockConfirm : MonoBehaviour {
 	
 	void OnGUI()
 	{
+		Main back = GameObject.Find("GameObject").GetComponent<Main>();
 		int confirmButtonX = Screen.width/2-80;
 		int confirmButtonY = Screen.height/2;
+		int toBeUnlocked = 0;
 		
 		if (packNumber != 0)
 		{
@@ -20,27 +22,36 @@ public class UnlockConfirm : MonoBehaviour {
 			if (packNumber ==1)
 			{
 				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Body for $1?");
+				toBeUnlocked = 1;
 			}
 			else if (packNumber ==2)
 			{
 				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Legs for $1?");
+				toBeUnlocked = 2;
 			}
 			else if (packNumber==3)
 			{
 				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Unlock Shoes for $1?");
+				toBeUnlocked = 3;
 			}
 			
 			if(GUI.Button(new Rect(confirmButtonX,confirmButtonY+20,80,40), "Confirm"))
 				{		
 					packNumber = 0;
-					Main back = GameObject.Find("GameObject").GetComponent<Main>();
+					if(toBeUnlocked == 1)
+						back.bodyUnlock = true;
+					if(toBeUnlocked == 2)
+						back.legUnlock = true;
+					if(toBeUnlocked == 3)
+						back.shoeUnlock = true;
+				
 					back.stage = 1;
 				}
 			if(GUI.Button(new Rect(confirmButtonX+120,confirmButtonY+20,80,40), "Cancel"))
 				{
 					packNumber = 0;
-					StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();
-					sf.StoreFrontEnabled = true;
+					Unlock sf = GameObject.Find("Unlock").GetComponent<Unlock>();
+					sf.UnlockEnabled = true;
 				}
 		}
 	}
