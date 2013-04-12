@@ -58,9 +58,9 @@ public class OrderConfirm : MonoBehaviour {
 	
 	void DoPurchase(string itemId) {
 		Main main = GameObject.Find("GameObject").GetComponent<Main>();
-		string AuthToken = main.auth.access_token;
+		string access_token = main.auth.access_token;
 		//string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
-		AddToCart.AddItemToCart(itemID, auth.access_token);
-		AddToCart.Purchase(auth.access_token);
+		AddToCart.AddItemToCart(itemId, access_token);
+		AddToCart.Purchase(access_token);
 	}
 }

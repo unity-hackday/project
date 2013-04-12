@@ -14,7 +14,7 @@ class Main : MonoBehaviour
 	//set in login screen
 	private string UserName = "billy.hon@elasticpath.com";
 	private string Password = "password";
-	private ResponseAuthentication auth = new ResponseAuthentication();
+	public ResponseAuthentication auth = new ResponseAuthentication();
 	
 	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
 	private string storeScope = "/unity";
