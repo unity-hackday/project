@@ -56,13 +56,27 @@ public class AddToCart {
 		return orderUrlTokens[3];
 	}
 	
-	public static void Purchase(string AuthToken) {
+	public static PurchaseResponse Purchase(string AuthToken) {
 		string orderId = GetOrderId (AuthToken);
-		string url = cortexServerUrl + "/purchases/orders" + storeScope + "/" + orderId;
+		string url = cortexServerUrl + "/purchases/orders" + storeScope + "/" + orderId + "?followLocation";
 		Debug.Log("URL: " + url + "\nAuth token: " + AuthToken + "\nJson: " + emptyJsonForm);
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", emptyJsonForm, AuthToken);
 		
 		Debug.Log(httpResponse.StatusCode);
+		
+		string purchaseJsonResponse = SendHttpRequestToCortex.GetResponseBody(httpResponse);
+		Debug.Log(purchaseJsonResponse);
+		
+		//remove all dashes from json response since C# hates them
+		purchaseJsonResponse = purchaseJsonResponse.Replace("-","");
+		
+		Serializer responseSerializer = new Serializer(typeof(PurchaseResponse));
+		PurchaseResponse response = (PurchaseResponse) responseSerializer.Deserialize(purchaseJsonResponse);
+		
+		Debug.Log(response.monetarytotal[0].amount);
+		Debug.Log(response.status);
+		
+		return response;
 	}
 	
 	
