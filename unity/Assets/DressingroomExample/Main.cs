@@ -12,8 +12,8 @@ class Main : MonoBehaviour
 {
 	
 	//set in login screen
-	private string UserName = "User Name";
-	private string Password = "Password";
+	private string UserName = "billy.hon@elasticpath.com";
+	private string Password = "password";
 	private ResponseAuthentication auth = new ResponseAuthentication();
 	
 	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
@@ -45,6 +45,7 @@ class Main : MonoBehaviour
 		auth.token_type = "";
 		
 		auth.access_token = "490499ab-d27d-4fa9-ab75-70b8ab7ecf0e";
+		Debug.Log(stage);
 		
         while (!CharacterGenerator.ReadyToUse) yield return 0;
         if (PlayerPrefs.HasKey(prefName))
@@ -111,7 +112,7 @@ class Main : MonoBehaviour
 
     void OnGUI()
     {
-		TestGUI();
+		//TestGUI();
 		
 		if (stage == 0) //Stage 0 is the login screen
 		{
