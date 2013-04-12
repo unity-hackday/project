@@ -109,8 +109,6 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		HttpWebResponse response = SendHttpRequestToCortex.SendRequest(reqURL, "GET", "{}", main.auth.access_token);
 		
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(response);
-		Debug.Log(response.StatusCode);
-		Debug.Log(responseJSON);
 		
 		Serializer responseSerializer = new Serializer (typeof(Response));
 		Response responseObject = (Response) responseSerializer.Deserialize(responseJSON);
@@ -125,12 +123,17 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		HttpWebResponse priceResponse = SendHttpRequestToCortex.SendRequest(priceHref, "GET", "{}", main.auth.access_token);
 		string priceJSONResponse = SendHttpRequestToCortex.GetResponseBody (priceResponse);
 		
-		
 		Serializer priceSerializer = new Serializer(typeof(ResponsePrice));
-		priceJSONResponse.Replace("purchase-price","purchaseprice");
+		priceJSONResponse = priceJSONResponse.Replace("purchase-price","purchaseprice");
+		
+		
+		
+		//Debug.Log("Hi" + priceJSONResponse);
 		ResponsePrice priceObject = (ResponsePrice) priceSerializer.Deserialize(priceJSONResponse);
 		
-		return priceObject.purchasePrice[0].display;
+		//Debug.Log("Bye" + priceJSONResponse);
+		
+		return priceObject.purchaseprice[0].display;
 		
 	}
 }

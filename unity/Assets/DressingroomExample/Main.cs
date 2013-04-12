@@ -170,10 +170,11 @@ class Main : MonoBehaviour
 	        GUILayout.EndArea();
 	        
 
-			if(GUI.Button(new Rect(Screen.width-80,Screen.height-80,80,80), "Enter Store"))
+			if(GUI.Button(new Rect(Screen.width-190,Screen.height-70,180,60), "Purchase Current Selections"))
 
 			{
 				StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();
+				sf.SetStoreFrontProductPrice();
 				sf.StoreFrontEnabled = true;
 				stage = 2;
 			}

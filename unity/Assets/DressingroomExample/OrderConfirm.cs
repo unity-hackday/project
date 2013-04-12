@@ -13,28 +13,32 @@ public class OrderConfirm : MonoBehaviour {
 	{
 		int confirmButtonX = Screen.width/2-80;
 		int confirmButtonY = Screen.height/2;
+		string priceOfTop = "$1.00";
+		string priceOfPants = "$1.00";
+		string priceOfShoes = "$1.00";
+		string priceOfAll = "$3.00";
 		
 		if (packNumber != 0)
 		{
 			string itemId = "";
 			if (packNumber ==1)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-25,290,130), "Buy Top?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Buy Top ("+priceOfTop+")?");
 			}
 			else if (packNumber ==2)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-25,290,130), "Buy Pants?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Buy Pants("+priceOfPants+")?");
 			}
 			else if (packNumber==3)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-25,290,130), "Buy Shoes?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Buy Shoes("+priceOfShoes+")?");
 			}
 			else if (packNumber==4)
 			{
-				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-25,290,130), "Buy All?");
+				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Buy All("+priceOfAll +")?");
 			}
 			
-			if(GUI.Button(new Rect(confirmButtonX,confirmButtonY,80,80), "Confirm"))
+			if(GUI.Button(new Rect(confirmButtonX,confirmButtonY+20,80,40), "Confirm"))
 				{
 					if (packNumber.Equals(1)) {
 						itemId = PurchaseCurrentOutfit.PurchaseItem("tops");
@@ -69,7 +73,7 @@ public class OrderConfirm : MonoBehaviour {
 					Main back = GameObject.Find("GameObject").GetComponent<Main>();
 					back.stage = 1;
 				}
-			if(GUI.Button(new Rect(confirmButtonX+160,confirmButtonY,80,80), "Cancel"))
+			if(GUI.Button(new Rect(confirmButtonX+120,confirmButtonY+20,80,40), "Cancel"))
 				{
 					packNumber = 0;
 					StoreFront sf = GameObject.Find("StoreFront").GetComponent<StoreFront>();

@@ -5,18 +5,18 @@ using System.Collections.Generic;
 public class ResponsePrice : Response {
 	
 	 private List<PurchasePrice> Purchase_Price;
-     public List<PurchasePrice> purchasePrice
+     public List<PurchasePrice> purchaseprice
      {
         get { return this.Purchase_Price; }
         set { this.Purchase_Price = value; }
      }
 	
 	public class PurchasePrice {
-		private int Amount;	
+		private decimal Amount;	
 		private string Currency;
 		private string Display;
 			
-        public int amount
+        public decimal amount
         {
             get { return this.Amount; }
             set { this.Amount = value; }
