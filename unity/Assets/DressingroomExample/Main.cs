@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Net;
+using JsonExSerializer;
 using UnityEngine;
 
 // This MonoBehaviour is responsible for controlling the CharacterGenerator,
@@ -12,9 +14,11 @@ class Main : MonoBehaviour
 	//set in login screen
 	private string UserName = "User Name";
 	private string Password = "Password";
+	private ResponseAuthentication auth = new ResponseAuthentication();
 	
-	public int stage = 0;
-	
+	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
+	private string storeScope = "/unity";
+	int stage = 0;
 	
 	//User names and passwords (even numbers = user name; odd numbers = password)
 	ArrayList users = new ArrayList();
@@ -36,7 +40,12 @@ class Main : MonoBehaviour
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
-
+		auth.access_token = "";
+		auth.expires_in = "";
+		auth.token_type = "";
+		
+		//auth.access_token = "490499ab-d27d-4fa9-ab75-70b8ab7ecf0e";
+		
         while (!CharacterGenerator.ReadyToUse) yield return 0;
         if (PlayerPrefs.HasKey(prefName))
             generator = CharacterGenerator.CreateWithConfig(PlayerPrefs.GetString(prefName));
@@ -102,43 +111,12 @@ class Main : MonoBehaviour
 
     void OnGUI()
     {
+		//TestGUI();
 		
 		if (stage == 0) //Stage 0 is the login screen
 		{
-
-			// Make a background box
-			GUI.backgroundColor = Color.black;
-			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
-			
-			//make login text fields
-			GUI.backgroundColor = Color.gray;
-			UserName = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-60, 200, 20),UserName, 25);
-			Password = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-30, 200, 20),Password, 25);
-			
-			// Make the first button. 
-			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
-			{
-				users.Add("user");
-				users.Add("123");
-				
-
-					if (UserName=="user" && Password == "123")
-					{
-						stage = 1; 
-					
-					}
-
-					else
-					{
-						//stage = 0;
-						GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
-					}
-
-					
-								
-			}
+			LoginScreen();
 		} //end of stage 0
-		
 		
 		
 		if(stage == 1) //stage 1 is the character selection screen
@@ -200,6 +178,80 @@ class Main : MonoBehaviour
 			}
 			
 	    }//end of stage 1
+	}
+	
+	void TestGUI() {
+		
+		GUI.Box(new Rect(10,10,100,90), "Loader Menu");
+		
+		if(GUI.Button(new Rect(20,40,80,20), "AddToCart")) {
+			
+			string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
+			AddToCart.AddItemToCart(itemID, auth.access_token);
+			
+			//HttpWebResponse httpResponse = SendRequst(url,"POST",json);
+			//Debug.Log(httpResponse.StatusCode);
+			
+			//Debug.Log(getResponseBody(httpResponse));
+		}
+	}
+	
+	void LoginScreen() {
+		// Make a background box
+		GUI.backgroundColor = Color.black;
+		GUI.Box(new Rect(0,0,Screen.width,Screen.height), "Welcome, Please Log In");
+		
+		//make login text fields
+		GUI.backgroundColor = Color.gray;
+		UserName = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-60, 200, 20),UserName, 50);
+		Password = GUI.TextField(new Rect(Screen.width/2, Screen.height/2-30, 200, 20),Password, 50);
+		
+		// Make the first button. 
+		if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
+		{
+			RequestUser user = new RequestUser();				
+			user.username = UserName;
+			user.password = Password;
+			
+			//Debug.Log(UserName);
+			//Debug.Log("access_token: " + auth.access_token);
+			
+		    // serialize to a string
+		    Serializer userSerializer = new Serializer(typeof(RequestUser));
+		    string jsonText = userSerializer.Serialize(user);
+			
+			//Get params for Cortex reequest
+			string url = cortexServerUrl + "/authentication" + storeScope;
+			string authToken = auth.access_token;
+			
+			//Debug.Log(jsonText);
+			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url,"POST",jsonText,authToken);
+			
+			//Debug.Log(httpResponse.StatusCode);
+			/*
+			users.Add("user");
+			users.Add("123");
+
+			//if (UserName=="user" && Password == "123")
+			*/
+			if(httpResponse.StatusCode == HttpStatusCode.OK)
+			{
+				stage = 1; 
+				//get AuthToken
+				string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
+				//Debug.Log(responseJSON);
+				
+	   			Serializer authSerializer = new Serializer(typeof(ResponseAuthentication));
+				auth = (ResponseAuthentication) authSerializer.Deserialize(responseJSON);
+				
+				//Debug.Log("access_token: " + auth.access_token);
+			}
+			else
+			{
+				//stage = 0;
+				GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
+			}
+		}
 	}
 
     // Draws buttons for configuring a specific category of items, like pants or shoes.

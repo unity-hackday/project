@@ -3,18 +3,18 @@ using System.Collections;
 
 public class RequestUser {
 	
-        private string username;
-        private string password;
+        private string Username;
+        private string Password;
 
-        public string Username
+        public string username
         {
-            get { return this.username; }
-            set { this.username = value; }
+            get { return this.Username; }
+            set { this.Username = value; }
         }
 
-        public string Password
+        public string password
         {
-            get { return this.password; }
-            set { this.password = value; }
+            get { return this.Password; }
+            set { this.Password = value; }
         }
 }

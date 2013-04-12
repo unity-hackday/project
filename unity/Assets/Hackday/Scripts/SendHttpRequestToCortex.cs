@@ -11,6 +11,7 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 
 	const int DefaultTimeout = 2 * 60 * 1000;  // 2 minutes timeout 
 	
+	/*
 	// Use this for initialization
 	void Start () {
 	
@@ -36,15 +37,20 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 			Debug.Log(getResponseBody(httpResponse));
 		}
 	}
+	*/
 	
 	/*
 	 * requestType must be "POST", "GET", "PUT" or "DELETE"
 	 */
-	HttpWebResponse SendRequst(string url, string requestType, string json) {
+	public static HttpWebResponse SendRequest(string url, string requestType, string json, string AuthToken) {
 		//Create Request
 		var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
 		httpWebRequest.ContentType = "Application/json";
 		httpWebRequest.Method = requestType;
+		
+		if(AuthToken.Length > 0) {
+			httpWebRequest.Headers.Add("Authorization", "Bearer " + AuthToken);
+		}
 		
 		if(requestType.Equals("POST")){
 			//Add JSON to Request body
@@ -77,7 +83,7 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 		return httpResponse;
 	}
 	
-	String getResponseBody(HttpWebResponse response){
+	public static String GetResponseBody(HttpWebResponse response){
 		Stream responseStream = response.GetResponseStream();
 		Encoding enc = System.Text.Encoding.GetEncoding("utf-8");
 		StreamReader responseStreamReader = new StreamReader(responseStream,enc);

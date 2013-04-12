@@ -7,8 +7,8 @@ public class JSONExample : MonoBehaviour {
 	void Start() {
 		// customer
 		RequestUser user = new RequestUser();
-		user.Username = "oliver.harris@elasticpath.com";
-		user.Password = "password";
+		user.username = "oliver.harris@elasticpath.com";
+		user.password = "password";
 	
 	    // serialize to a string
 	    Serializer serializer = new Serializer(typeof(RequestUser));
@@ -18,6 +18,6 @@ public class JSONExample : MonoBehaviour {
 		
 		// **** JSON to object 
 		RequestUser deserializedUser = (RequestUser) serializer.Deserialize(jsonText);
-		Debug.Log("Username: " + deserializedUser.Username + " Password: " + deserializedUser.Password);
+		Debug.Log("Username: " + deserializedUser.username + " Password: " + deserializedUser.password);
 	}
 }
