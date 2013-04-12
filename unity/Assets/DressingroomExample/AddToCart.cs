@@ -11,8 +11,7 @@ public class AddToCart {
 	private static string purchaseJsonForm = "{}";
 	
 	public static void AddItemToCart (string itemId, string AuthToken) {
-    	string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;
-		
+    	string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;		
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", quantityJsonForm, AuthToken);
 		
 		Debug.Log(httpResponse.StatusCode);
@@ -46,8 +45,8 @@ public class AddToCart {
 	
 	public static void Purchase(string AuthToken) {
 		string orderId = GetOrderId (AuthToken);
-		string url = cortexServerUrl + "/purchases/orders/" + storeScope + "/" + orderId;
-		
+		string url = cortexServerUrl + "/purchases/orders" + storeScope + "/" + orderId;
+		Debug.Log("URL: " + url + "\nAuth token: " + AuthToken + "\nJson: " + purchaseJsonForm);
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", purchaseJsonForm, AuthToken);
 		
 		Debug.Log(httpResponse.StatusCode);

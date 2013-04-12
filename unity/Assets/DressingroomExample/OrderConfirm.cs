@@ -18,24 +18,31 @@ public class OrderConfirm : MonoBehaviour {
 			if (packNumber ==1)
 			{
 				GUI.Box(new Rect(0,0,Screen.width,Screen.height), "You have Ordered: Pack 1");
-				
 				//get itemId
 			}
-			if (packNumber ==2)
+			else if (packNumber ==2)
 			{
 				GUI.Box(new Rect(0,0,Screen.width,Screen.height), "You have Ordered: Pack 2");
-				
 				//get itemId
 			}
-			if (packNumber==3)
+			else if (packNumber==3)
 			{
 				GUI.Box(new Rect(0,0,Screen.width,Screen.height), "You have Ordered: Pack 3");
-				
 				//get itemId
 			}
 			
 			if(GUI.Button(new Rect(Screen.width/2-80,Screen.height/2,80,80), "Confirm"))
 				{
+				
+				if (packNumber.Equals(1)) {
+					itemId = PurchaseCurrentOutfit.PurchaseItem("tops");
+				} else if (packNumber.Equals (2)) {
+					itemId = PurchaseCurrentOutfit.PurchaseItem("pants");					
+				} else if (packNumber.Equals (3)) {
+					itemId = PurchaseCurrentOutfit.PurchaseItem("shoes");					
+				}
+				
+					Debug.Log(itemId);
 					if(!itemId.Equals("")) {
 						DoPurchase(itemId);
 					}
@@ -61,8 +68,11 @@ public class OrderConfirm : MonoBehaviour {
 	void DoPurchase(string itemId) {
 		Main main = GameObject.Find("GameObject").GetComponent<Main>();
 		string access_token = main.auth.access_token;
+		Debug.Log(access_token);
 		//string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
 		AddToCart.AddItemToCart(itemId, access_token);
+		// ***** NOTE *******
+		// THIS WILL FAIL IF ITEM IS SHIPPABLE, WILL ENCOUNTER A NEEDINFO 
 		AddToCart.Purchase(access_token);
 	}
 }
