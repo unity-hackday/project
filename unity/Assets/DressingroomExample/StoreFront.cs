@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StoreFront : MonoBehaviour {
 	
-	public bool StoreFrontEnabled = true;
+	public bool StoreFrontEnabled = false;
 	
 	string priceOfTop = null;
 	string priceOfPants = null;
