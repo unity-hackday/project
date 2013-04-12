@@ -169,7 +169,14 @@ class Main : MonoBehaviour
 	
 	        GUILayout.EndArea();
 	        
+			if(GUI.Button(new Rect(Screen.width-190,Screen.height-140,180,60), "Unlock Customizations"))
 
+			{
+				Unlock uk = GameObject.Find("Unlock").GetComponent<Unlock>();
+				uk.UnlockEnabled = true;
+				stage = 2;
+			}
+			
 			if(GUI.Button(new Rect(Screen.width-190,Screen.height-70,180,60), "Purchase Current Selections"))
 
 			{
