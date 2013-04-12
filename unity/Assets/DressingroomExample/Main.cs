@@ -40,11 +40,11 @@ class Main : MonoBehaviour
     // Initializes the CharacterGenerator and load a saved config if any.
     IEnumerator Start()
     {
-		//auth.access_token = "";
+		auth.access_token = "";
 		auth.expires_in = "";
 		auth.token_type = "";
 		
-		auth.access_token = "490499ab-d27d-4fa9-ab75-70b8ab7ecf0e";
+		//auth.access_token = "490499ab-d27d-4fa9-ab75-70b8ab7ecf0e";
 		Debug.Log(stage);
 		
         while (!CharacterGenerator.ReadyToUse) yield return 0;
@@ -188,10 +188,11 @@ class Main : MonoBehaviour
 		if(GUI.Button(new Rect(20,40,80,20), "AddToCart")) {
 			
 			string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
-			//AddToCart.AddItemToCart(itemID, auth.access_token);
+			AddToCart.AddItemToCart(itemID, auth.access_token);
 			
 			//AddToCart.GetCartResponse(auth.access_token);
-			AddToCart.GetOrderId(auth.access_token);
+			//AddToCart.GetOrderId(auth.access_token);
+			AddToCart.Purchase(auth.access_token);
 			
 			//HttpWebResponse httpResponse = SendRequst(url,"POST",json);
 			//Debug.Log(httpResponse.StatusCode);
