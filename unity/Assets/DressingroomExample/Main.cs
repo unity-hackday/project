@@ -18,7 +18,7 @@ class Main : MonoBehaviour
 	
 	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
 	private string storeScope = "/unity";
-	int stage = 0;
+	public int stage = 0;
 	
 	//User names and passwords (even numbers = user name; odd numbers = password)
 	ArrayList users = new ArrayList();
