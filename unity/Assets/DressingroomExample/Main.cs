@@ -206,11 +206,11 @@ class Main : MonoBehaviour
 	    }//end of stage 1
 		
 		if(stage==5){
-			int confirmButtonX = Screen.width/2-80;
+			int confirmButtonX = Screen.width/2-65;
 			int confirmButtonY = Screen.height/2;
-			GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "OK!");
+			GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,280,100), "Your purchase has been proccessed. \n Thank you for shopping with Co-Op and Co!");
 			
-			if(GUI.Button(new Rect(confirmButtonX+120,confirmButtonY+20,80,40), "Contiune.")){
+			if(GUI.Button(new Rect(confirmButtonX+75,confirmButtonY+20,80,40), "Contiune")){
 				stage =1 ;
 			}
 		}
