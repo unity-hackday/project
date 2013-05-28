@@ -94,12 +94,13 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		ResponseSearch responseSearchObj = (ResponseSearch) responseSerializer.Deserialize(responseJSON);
 		string itemUri = responseSearchObj.links[0].uri;
 		
+		return itemUri;
 		
-		char[] seperators = new char[] {'/'};
-		string[] itemUriTokens = itemUri.Split(seperators);
+		//char[] seperators = new char[] {'/'};
+		//string[] itemUriTokens = itemUri.Split(seperators);
 		
-		Debug.Log("Item ID: " + itemUriTokens[3]);
-		return itemUriTokens[3];
+		//Debug.Log("Item ID: " + itemUriTokens[3]);
+		//return itemUriTokens[3];
 	}
 	
 	public static string FindItemPrice (string itemId) {
