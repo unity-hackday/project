@@ -13,8 +13,9 @@ public class AddToCart {
 	
 	private static string shippingOptionId = "iyzemqzsga4tmljrgzbdeljqimyucljzgnbdqlkcgfbdmnsdgu4tgmjwhe";
 	
-	public static void AddItemToCart (string itemId, string AuthToken) {
-    	string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;		
+	public static void AddItemToCart (string itemUri, string AuthToken) {
+    	//string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;		
+		string url = itemUri;
 		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", quantityJsonForm, AuthToken);
 		
 		Debug.Log(httpResponse.StatusCode);

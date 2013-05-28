@@ -94,13 +94,13 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		string itemUri = responseSearchObj.links[0].uri; //We know there is only one link in the search results
 		Debug.Log("Item URI: " + itemUri);
 		
-		//return itemUri;
+		return itemUri;
 		
-		char[] seperators = new char[] {'/'};
-		string[] itemUriTokens = itemUri.Split(seperators);
+		//char[] seperators = new char[] {'/'};
+		//string[] itemUriTokens = itemUri.Split(seperators);
 		
-		Debug.Log("Item ID: " + itemUriTokens[3]);
-		return itemUriTokens[3];
+		//Debug.Log("Item ID: " + itemUriTokens[3]);
+		//return itemUriTokens[3];
 	}
 	
 	/*
