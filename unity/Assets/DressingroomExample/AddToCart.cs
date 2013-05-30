@@ -16,7 +16,37 @@ public class AddToCart {
 	public static void AddItemToCart (string itemUri, string AuthToken) {
     	//string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;		
 		string url = itemUri;
-		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "POST", quantityJsonForm, AuthToken);
+		
+		HttpWebResponse itemResponse = SendHttpRequestToCortex.SendRequest(url, "GET", emptyJsonForm, AuthToken);
+		string itemResponseJSON = SendHttpRequestToCortex.GetResponseBody(itemResponse);
+		
+		Serializer Serializer = new Serializer(typeof(Response));
+		Response itemResponseObj = (Response) responseSerializer.Deserialize(itemResponseJSON);
+		// -- Get add to cart form uri
+		string addToCartFormUri = "";
+		foreach (Response.Links linkObj in itemResponseObj.links) {
+			if(linkObj.rel.Equals("addtocartform")) {
+				addToCartFormUri = linkObj.uri;
+			}
+		}
+		
+		// -- get add to cart form object to get addtodefaultcart action url
+		HttpWebResponse addToCartFormResponse = SendHttpRequestToCortex.SendRequest(addToCartFormUri, "GET", emptyJsonForm, AuthToken);
+		string addToCartFormResponseJSON = SendHttpRequestToCortex.GetResponseBody(addToCartFormResponse);
+		
+		Response addToCartFormResponseObj = (Response) responseSerializer.Deserialize(responseJSON);
+		
+		// -- Get add to cart form uri
+		string addToDefaultCartActionUri = "";
+		
+		foreach (Response.Links linkObj in itemResponseObj.links) {
+			if(linkObj.rel.Equals("addtodefaultcartaction")) {
+				addToCartFormUri = linkObj.uri;
+			}
+		}
+			
+		// add item to cart
+		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(addToDefaultCartActionUri, "POST", quantityJsonForm, AuthToken);
 		
 		Debug.Log(httpResponse.StatusCode);
 	}
