@@ -5,7 +5,7 @@ public class RequestItemSearch {
 
 	
         private string Keywords;
-        private int PageSize;
+        private int PageSize = 5;
 
         public string keywords
         {

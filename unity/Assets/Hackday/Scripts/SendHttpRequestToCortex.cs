@@ -39,6 +39,14 @@ public class SendHttpRequestToCortex : MonoBehaviour {
 	}
 	*/
 	
+	public static HttpWebResponse SendPostRequest(string url, string json) {
+		return SendRequest(url, "POST", json, RequestUtils.getAuthToken());
+	}
+	
+	public static HttpWebResponse SendGetRequest(string url) {
+		return SendRequest(url, "GET", "{}", RequestUtils.getAuthToken());
+	}
+	
 	/*
 	 * requestType must be "POST", "GET", "PUT" or "DELETE"
 	 */
