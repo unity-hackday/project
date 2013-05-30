@@ -20,7 +20,7 @@ public class AddToCart {
 		HttpWebResponse itemResponse = SendHttpRequestToCortex.SendRequest(url, "GET", emptyJsonForm, AuthToken);
 		string itemResponseJSON = SendHttpRequestToCortex.GetResponseBody(itemResponse);
 		
-		Serializer Serializer = new Serializer(typeof(Response));
+		Serializer responseSerializer = new Serializer(typeof(Response));
 		Response itemResponseObj = (Response) responseSerializer.Deserialize(itemResponseJSON);
 		// -- Get add to cart form uri
 		string addToCartFormUri = "";
@@ -34,7 +34,7 @@ public class AddToCart {
 		HttpWebResponse addToCartFormResponse = SendHttpRequestToCortex.SendRequest(addToCartFormUri, "GET", emptyJsonForm, AuthToken);
 		string addToCartFormResponseJSON = SendHttpRequestToCortex.GetResponseBody(addToCartFormResponse);
 		
-		Response addToCartFormResponseObj = (Response) responseSerializer.Deserialize(responseJSON);
+		Response addToCartFormResponseObj = (Response) responseSerializer.Deserialize(addToCartFormResponseJSON);
 		
 		// -- Get add to cart form uri
 		string addToDefaultCartActionUri = "";
