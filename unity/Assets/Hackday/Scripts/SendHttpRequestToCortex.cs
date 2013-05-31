@@ -10,13 +10,13 @@ using System;
 public class SendHttpRequestToCortex : MonoBehaviour {
 	
 	public const string cortexServerUrl = "http://10.10.121.110:8080/cortex";
-	public const string authenticationUrl = cortexServerUrl + "/authentication/mobee";
-	public const string registrationUrl = cortexServerUrl + "/registrations/mobee/newaccount/form";
-	public const string profilesUrl = cortexServerUrl + "/profiles/mobee/default";
-	public const string cartsUrl = cortexServerUrl + "/carts/mobee/default";
-	public const string searchesUrl = cortexServerUrl + "/searches/mobee";
-	public const string navigationUrl = cortexServerUrl + "/navigations/mobee";
-	public const string slotsUrl = cortexServerUrl + "/slots/mobee";
+	public const string authenticationUrl = cortexServerUrl + "/authentication/unity";
+	public const string registrationUrl = cortexServerUrl + "/registrations/unity/newaccount/form";
+	public const string profilesUrl = cortexServerUrl + "/profiles/unity/default";
+	public const string cartsUrl = cortexServerUrl + "/carts/unity/default";
+	public const string searchesUrl = cortexServerUrl + "/searches/unity";
+	public const string navigationUrl = cortexServerUrl + "/navigations/unity";
+	public const string slotsUrl = cortexServerUrl + "/slots/unity";
 	
 	const int DefaultTimeout = 2 * 60 * 1000;  // 2 minutes timeout 
 	

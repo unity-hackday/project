@@ -72,9 +72,9 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		FindCharacter ();
 		string itemName = characterSkin.materials[itemMaterialIndex].name;
 		itemName = itemName.Replace(" (Instance)","");
-		string itemId = SearchForItem(itemName);	
+		string itemUrl = SearchForItem(itemName);	
 		
-		return itemId;
+		return itemUrl;
 	}
 	
 	/*
@@ -91,10 +91,10 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
 		ResponseSearch responseSearchObj = (ResponseSearch) RequestUtils.deserialize(responseJSON, typeof(ResponseSearch));
 		
-		string itemUri = responseSearchObj.links[0].uri; //We know there is only one link in the search results
-		Debug.Log("Item URI: " + itemUri);
+		string itemUrl = responseSearchObj.links[0].href; //We know there is only one link in the search results
+		Debug.Log("Item URL: " + itemUrl);
 		
-		return itemUri;
+		return itemUrl;
 		
 		//char[] seperators = new char[] {'/'};
 		//string[] itemUriTokens = itemUri.Split(seperators);

@@ -20,7 +20,7 @@ public class OrderConfirm : MonoBehaviour {
 		PurchaseResponse response;
 		if (packNumber != 0)
 		{
-			string itemId = "";
+			string itemUrl = "";
 			if (packNumber ==1)
 			{
 				GUI.Box(new Rect(confirmButtonX-25,confirmButtonY-20,250,100), "Buy Top ("+priceOfTop+")?");
@@ -41,30 +41,30 @@ public class OrderConfirm : MonoBehaviour {
 			if(GUI.Button(new Rect(confirmButtonX,confirmButtonY+20,80,40), "Confirm"))
 				{
 					if (packNumber.Equals(1)) {
-						itemId = PurchaseCurrentOutfit.PurchaseItem("tops");
-						response = DoPurchase(itemId);
+						itemUrl = PurchaseCurrentOutfit.PurchaseItem("tops");
+						response = DoPurchase(itemUrl);
 					} else if (packNumber.Equals (2)) {
-						itemId = PurchaseCurrentOutfit.PurchaseItem("pants");	
-						response = DoPurchase(itemId);
+						itemUrl = PurchaseCurrentOutfit.PurchaseItem("pants");	
+						response = DoPurchase(itemUrl);
 					} else if (packNumber.Equals (3)) {
-						itemId = PurchaseCurrentOutfit.PurchaseItem("shoes");	
-						response = DoPurchase(itemId);
+						itemUrl = PurchaseCurrentOutfit.PurchaseItem("shoes");	
+						response = DoPurchase(itemUrl);
 					//} else if(packNumber.Equals (4)) {
 					} else {
 						Main main = GameObject.Find("GameObject").GetComponent<Main>();
 						string access_token = main.auth.access_token;
 						
-						string topsId = PurchaseCurrentOutfit.PurchaseItem("tops");
-						string pantsId = PurchaseCurrentOutfit.PurchaseItem("pants");
-						string shoesId = PurchaseCurrentOutfit.PurchaseItem("shoes");
+						string topsUrl = PurchaseCurrentOutfit.PurchaseItem("tops");
+						string pantsUrl = PurchaseCurrentOutfit.PurchaseItem("pants");
+						string shoesUrl = PurchaseCurrentOutfit.PurchaseItem("shoes");
 					
-						Debug.Log(topsId);
-						Debug.Log(pantsId);
-						Debug.Log(shoesId);
+						Debug.Log(topsUrl);
+						Debug.Log(pantsUrl);
+						Debug.Log(shoesUrl);
 					
-						AddToCart.AddItemToCart(topsId, access_token);
-						AddToCart.AddItemToCart(pantsId, access_token);
-						AddToCart.AddItemToCart(shoesId, access_token);
+						AddToCart.AddItemToCart(topsUrl, access_token);
+						AddToCart.AddItemToCart(pantsUrl, access_token);
+						AddToCart.AddItemToCart(shoesUrl, access_token);
 						AddToCart.setShippingOptionInfoIfNeeded(access_token);
 					
 						response = AddToCart.Purchase(access_token);
@@ -89,18 +89,18 @@ public class OrderConfirm : MonoBehaviour {
 	
 	}
 	
-	PurchaseResponse DoPurchase(string itemId) {
+	PurchaseResponse DoPurchase(string itemUrl) {
 		Main main = GameObject.Find("GameObject").GetComponent<Main>();
 		string access_token = main.auth.access_token;
 		Debug.Log(access_token);
 		//string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
 		
 		//Add Item to Cart
-		AddToCart.AddItemToCart(itemId, access_token);
+		AddToCart.AddItemToCart(itemUrl, access_token);
 		
 		AddToCart.setShippingOptionInfoIfNeeded(access_token);
 		
-		//Debug.Log(AddToCart.GetOrderId (access_token));
+		//Debug.Log(AddToCart.GetOrderUrl (access_token));
 		
 		// ***** NOTE *******
 		// THIS WILL FAIL IF ITEM IS SHIPPABLE, WILL ENCOUNTER A NEEDINFO 
