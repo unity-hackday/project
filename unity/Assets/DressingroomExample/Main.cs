@@ -20,9 +20,6 @@ class Main : MonoBehaviour
 	private string storeScope = "/unity";
 	public int stage = 0;
 	
-	//User names and passwords (even numbers = user name; odd numbers = password)
-	ArrayList users = new ArrayList();
-	
     CharacterGenerator generator;
     GameObject character;
     bool usingLatestConfig;
@@ -212,11 +209,11 @@ class Main : MonoBehaviour
 		if(GUI.Button(new Rect(20,40,80,20), "AddToCart")) {
 			
 			string itemID = "mu4wczjwheztkmdghaydgndemjsdmmruha4tsy3bmyywiytggzsdiojvgztgimld";
-			AddToCart.AddItemToCart(itemID, auth.access_token);
+			AddToCart.AddItemToCart(itemID);
 			
 			//AddToCart.GetCartResponse(auth.access_token);
 			//AddToCart.GetOrderId(auth.access_token);
-			AddToCart.Purchase(auth.access_token);
+			AddToCart.Purchase();
 			
 			//HttpWebResponse httpResponse = SendRequst(url,"POST",json);
 			//Debug.Log(httpResponse.StatusCode);

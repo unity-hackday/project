@@ -13,29 +13,11 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 	// Materials[3] = Pants
 	// Materials[4] = Shoes
 	// Materials[5] = Tops
-	
-	
-	private static string cortexServerUrl = "http://10.10.121.110:8080/cortex";
 	private static string searchURL = "http://10.10.121.110:8080/cortex/searches/unity/keywords/items?followLocation";
 	
 	private static int PANTS_INDEX = 3;
 	private static int SHOES_INDEX = 4;
 	private static int TOPS_INDEX = 5;
-	/*
-	void PurchaseSelectedOutfit () {
-//		string url = cortexServerUrl + "/carts/" + storeScope + "/default";
-		this.FindCharacter();
-		
-		Debug.Log(characterSkin.materials.Length);
-		Debug.Log(characterSkin.materials[0].name);
-		Debug.Log(characterSkin.materials[1].name);
-		Debug.Log(characterSkin.materials[2].name);
-		Debug.Log(characterSkin.materials[3].name);
-		Debug.Log(characterSkin.materials[4].name);
-		Debug.Log(characterSkin.materials[5].name);
-		
-		string item = this.SearchForItem (characterSkin.materials[5].name);
-	}*/
 	
 	static void FindCharacter () {
 		GameObject characterObj = null;
@@ -52,9 +34,14 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 	
 	/* 
 	 * itemCategory is either: tops, pants, shoes
-	 * returning item id 
+	 * returning itemurl 
 	 */
-	public static string PurchaseItem(string itemCategory) {
+	public static string getItemUrl(string itemCategory) {
+		string itemName = getItemName(itemCategory);
+		return SearchForItem(itemName);	
+	}
+	
+	private static string getItemName(string itemCategory){
 		int itemMaterialIndex;
 		if (itemCategory.Equals("tops")) {
 			itemMaterialIndex = TOPS_INDEX;
@@ -68,13 +55,9 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 			//item category is invalid. Therefore, no item id exists
 			return "";
 		}
-		
 		FindCharacter ();
 		string itemName = characterSkin.materials[itemMaterialIndex].name;
-		itemName = itemName.Replace(" (Instance)","");
-		string itemUrl = SearchForItem(itemName);	
-		
-		return itemUrl;
+		return itemName.Replace(" (Instance)","");
 	}
 	
 	/*
@@ -95,23 +78,15 @@ public class PurchaseCurrentOutfit : MonoBehaviour {
 		Debug.Log("Item URL: " + itemUrl);
 		
 		return itemUrl;
-		
-		//char[] seperators = new char[] {'/'};
-		//string[] itemUriTokens = itemUri.Split(seperators);
-		
-		//Debug.Log("Item ID: " + itemUriTokens[3]);
-		//return itemUriTokens[3];
 	}
 	
 	/*
 	 * returns price
 	 */
 	public static string FindItemPrice(string itemUrl) {
-		//string reqURL = cortexServerUrl + "/items/unity/" + itemId; 
 		Response itemResponse = getItem(itemUrl);
 		
 		//get link to prices from item
-		//is there a way to get the priceHref without looping?
 		string priceHref = "";
 		foreach (Response.Links linkObj in itemResponse.links) {
 			if(linkObj.rel.Equals("price")) {

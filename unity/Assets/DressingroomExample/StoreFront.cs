@@ -9,6 +9,11 @@ public class StoreFront : MonoBehaviour {
 	string priceOfPants = null;
 	string priceOfShoes = null;
 	
+	private static int TOPS_PACK_NUMBER = 1;
+	private static int PANTS_PACK_NUMBER = 2;
+	private static int SHOES_PACK_NUMBER = 3;
+	private static int ALL_PACK_NUMBER = 4;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -20,18 +25,13 @@ public class StoreFront : MonoBehaviour {
 	}
 	
 	public void SetStoreFrontProductPrice () {
-		string topsId = PurchaseCurrentOutfit.PurchaseItem("tops");
-		string pantsId = PurchaseCurrentOutfit.PurchaseItem("pants");
-		string shoesId = PurchaseCurrentOutfit.PurchaseItem("shoes");
+		string topsUrl = PurchaseCurrentOutfit.getItemUrl("tops");
+		string pantsUrl = PurchaseCurrentOutfit.getItemUrl("pants");
+		string shoesUrl = PurchaseCurrentOutfit.getItemUrl("shoes");
 		
-		//Debug.Log ("Hi");
-		
-		priceOfTop = PurchaseCurrentOutfit.FindItemPrice(topsId);
-		priceOfPants = PurchaseCurrentOutfit.FindItemPrice(pantsId);
-		priceOfShoes = PurchaseCurrentOutfit.FindItemPrice(shoesId);
-		
-		
-		//Debug.Log ("Bye");
+		priceOfTop = PurchaseCurrentOutfit.FindItemPrice(topsUrl);
+		priceOfPants = PurchaseCurrentOutfit.FindItemPrice(pantsUrl);
+		priceOfShoes = PurchaseCurrentOutfit.FindItemPrice(shoesUrl);
 	}
 		
 	void OnGUI()
@@ -55,25 +55,25 @@ public class StoreFront : MonoBehaviour {
 			{
 				StoreFrontEnabled = false;
 				OrderConfirm checkout = GameObject.Find("OrderConfirm").GetComponent<OrderConfirm>();
-				checkout.packNumber = 1;
+				checkout.setPackNumber(TOPS_PACK_NUMBER);
 			}
 			if(GUI.Button(new Rect(anchorX+spacing,anchorY,120,40), "Pants ("+priceOfPants+")"))
 			{
 				StoreFrontEnabled = false;
 				OrderConfirm checkout = GameObject.Find("OrderConfirm").GetComponent<OrderConfirm>();
-				checkout.packNumber = 2;
+				checkout.setPackNumber(PANTS_PACK_NUMBER);
 			}
 			if(GUI.Button(new Rect(anchorX+spacing*2,anchorY,120,40), "Shoes ("+priceOfShoes+")"))
 			{
 				StoreFrontEnabled = false;
 				OrderConfirm checkout = GameObject.Find("OrderConfirm").GetComponent<OrderConfirm>();
-				checkout.packNumber = 3;
+				checkout.setPackNumber(SHOES_PACK_NUMBER);
 			}
 			if(GUI.Button(new Rect(anchorX+spacing*3,anchorY,120,40), "All ("+priceOfAll+")"))
 			{
 				StoreFrontEnabled = false;
 				OrderConfirm checkout = GameObject.Find("OrderConfirm").GetComponent<OrderConfirm>();
-				checkout.packNumber = 4;
+				checkout.setPackNumber(ALL_PACK_NUMBER);
 			}
 			
 			if(GUI.Button(new Rect(Screen.width-90,Screen.height-70,80,60), "Cancel"))

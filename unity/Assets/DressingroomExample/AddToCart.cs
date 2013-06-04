@@ -13,15 +13,12 @@ public class AddToCart {
 	
 	private static string shippingOptionId = "iyzemqzsga4tmljrgzbdeljqimyucljzgnbdqlkcgfbdmnsdgu4tgmjwhe";
 	
-	public static void AddItemToCart (string itemUri, string AuthToken) {
-    	//string url = cortexServerUrl + "/carts/" + storeScope + "/default/lineitems/items/" + storeScope + "/" + itemId;		
-		string url = itemUri;
-		
-		HttpWebResponse itemResponse = SendHttpRequestToCortex.SendRequest(url, "GET", emptyJsonForm, AuthToken);
+	public static void AddItemToCart (string itemUri) {
+		HttpWebResponse itemResponse = SendHttpRequestToCortex.SendGetRequest(itemUri);
 		string itemResponseJSON = SendHttpRequestToCortex.GetResponseBody(itemResponse);
 		
-		Serializer responseSerializer = new Serializer(typeof(Response));
-		Response itemResponseObj = (Response) responseSerializer.Deserialize(itemResponseJSON);
+		Response itemResponseObj = (Response) RequestUtils.deserialize(itemResponseJSON, typeof(Response));
+		
 		// -- Get add to cart form uri
 		string addToCartFormUrl = "";
 		foreach (Response.Links linkObj in itemResponseObj.links) {
@@ -29,20 +26,17 @@ public class AddToCart {
 				addToCartFormUrl = linkObj.href;
 			}
 		}
-		
 		Debug.Log(addToCartFormUrl);
 		
 		// -- get add to cart form object to get addtodefaultcart action url
-		HttpWebResponse addToCartFormResponse = SendHttpRequestToCortex.SendRequest(addToCartFormUrl, "GET", emptyJsonForm, AuthToken);
+		HttpWebResponse addToCartFormResponse = SendHttpRequestToCortex.SendGetRequest(addToCartFormUrl);
 		string addToCartFormResponseJSON = SendHttpRequestToCortex.GetResponseBody(addToCartFormResponse);
 		
-		Response addToCartFormResponseObj = (Response) responseSerializer.Deserialize(addToCartFormResponseJSON);
-		
+		Response addToCartFormResponseObj = (Response) RequestUtils.deserialize(addToCartFormResponseJSON, typeof(Response));
 		Debug.Log(addToCartFormResponseJSON);
 		
 		// -- Get add to cart form uri
 		string addToDefaultCartActionUrl = "";
-		
 		foreach (Response.Links linkObj in addToCartFormResponseObj.links) {
 			if(linkObj.rel.Equals("addtodefaultcartaction")) {
 				addToDefaultCartActionUrl = linkObj.href;
@@ -50,30 +44,26 @@ public class AddToCart {
 		}
 		
 		Debug.Log(addToDefaultCartActionUrl);
-		// add item to cart
-		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(addToDefaultCartActionUrl, "POST", quantityJsonForm, AuthToken);
 		
+		// add item to cart
+		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendPostRequest(addToDefaultCartActionUrl, quantityJsonForm);
 		Debug.Log(httpResponse.StatusCode);
 	}
 	
-	public static Response GetCartResponse (string AuthToken) {
+	public static Response GetCartResponse () {
 		string url = SendHttpRequestToCortex.cartsUrl;
-		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "GET", quantityJsonForm, AuthToken);
+		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendGetRequest(url);
 		
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
 	   	Debug.Log(responseJSON);
 		
-		Serializer responseSerializer = new Serializer(typeof(Response));
-		Response response = (Response) responseSerializer.Deserialize(responseJSON);
-		
-		//Debug.Log("Self.type: " + response.self.type);
-		//Debug.Log("Order.URL: " + response.links[2].href);
+		Response response = (Response) RequestUtils.deserialize(responseJSON, typeof(Response));
 		
 		return response;
 	}
 	
-	public static string GetOrderUrl (string AuthToken){
-		Response cartResponse = GetCartResponse(AuthToken);
+	public static string GetOrderUrl (){
+		Response cartResponse = GetCartResponse();
 		
 		string orderUrl = null;
 		foreach (Response.Links linkObj in cartResponse.links) {
@@ -84,17 +74,15 @@ public class AddToCart {
 		return orderUrl;
 	}
 	
-	public static PurchaseResponse Purchase(string AuthToken) {
-		string orderUrl = GetOrderUrl (AuthToken);
+	public static PurchaseResponse Purchase() {
+		string orderUrl = GetOrderUrl ();
 		Debug.Log(orderUrl);
-		//Debug.Log("URL: " + url + "\nAuth token: " + AuthToken + "\nJson: " + emptyJsonForm);
 		
 		//Get purchase form URL:
 		HttpWebResponse orderResponse = SendHttpRequestToCortex.SendGetRequest(orderUrl);
 		string orderResponseJSON = SendHttpRequestToCortex.GetResponseBody(orderResponse);
 		
-		Serializer responseSerializer = new Serializer(typeof(Response));
-		Response orderResponseObject = (Response) responseSerializer.Deserialize(orderResponseJSON);
+		Response orderResponseObject = (Response) RequestUtils.deserialize(orderResponseJSON, typeof(Response));
 		string purchaseFormUrl = "";
 		foreach (Response.Links linkObj in orderResponseObject.links) {
 			if (linkObj.rel.Equals ("purchaseform")) {
@@ -106,7 +94,7 @@ public class AddToCart {
 		HttpWebResponse purchaseFormResponse = SendHttpRequestToCortex.SendGetRequest(purchaseFormUrl);
 		string purchaseFormResponseJSON = SendHttpRequestToCortex.GetResponseBody(purchaseFormResponse);
 		
-		Response purchaseFormResponseObject = (Response) responseSerializer.Deserialize(purchaseFormResponseJSON);
+		Response purchaseFormResponseObject = (Response) RequestUtils.deserialize(purchaseFormResponseJSON, typeof(Response));
 		string submitOrderActionUrl = "";
 		foreach (Response.Links linkObj in purchaseFormResponseObject.links) {
 			if (linkObj.rel.Equals ("submitorderaction")) {
@@ -118,8 +106,7 @@ public class AddToCart {
 		
 		//Submit order to make purchase
 		submitOrderActionUrl = submitOrderActionUrl+ "?followLocation";
-		HttpWebResponse submitOrderActionResponse = SendHttpRequestToCortex.SendRequest(submitOrderActionUrl, "POST", emptyJsonForm, AuthToken);
-		
+		HttpWebResponse submitOrderActionResponse = SendHttpRequestToCortex.SendPostRequest(submitOrderActionUrl, emptyJsonForm);
 		Debug.Log(submitOrderActionResponse.StatusCode);
 		
 		string submitOrderActionResponseJSON = SendHttpRequestToCortex.GetResponseBody(submitOrderActionResponse);
@@ -129,8 +116,7 @@ public class AddToCart {
 		submitOrderActionResponseJSON = submitOrderActionResponseJSON.Replace("-","");
 		Debug.Log(submitOrderActionResponseJSON);
 		
-		Serializer purchaseResponseSerializer = new Serializer(typeof(PurchaseResponse));
-		PurchaseResponse response = (PurchaseResponse) purchaseResponseSerializer.Deserialize(submitOrderActionResponseJSON);
+		PurchaseResponse response = (PurchaseResponse) RequestUtils.deserialize(submitOrderActionResponseJSON, typeof(PurchaseResponse));
 		
 		Debug.Log(response.monetarytotal[0].amount);
 		Debug.Log(response.status);
@@ -138,17 +124,12 @@ public class AddToCart {
 		return response;
 	}
 	
-	
-	public static void setShippingOptionInfoIfNeeded(string AuthToken) {
+	public static void setShippingOptionInfoIfNeeded() {
 		//Get OrderUri
-		string orderUrl = AddToCart.GetOrderUrl (AuthToken);
-		
-		Debug.Log("BeforeGetOrderResponse");
+		string orderUrl = GetOrderUrl();
 		
 		//Get Order
-		Response orderResponse = GetOrderResponse(orderUrl, AuthToken);
-		
-		Debug.Log("AfterGetOrderResponse");
+		Response orderResponse = GetOrderResponse(orderUrl);
 		
 		//check if order has needInfoLink
 		string needInfoUrl = GetRelUri("needinfo", orderResponse);
@@ -170,11 +151,11 @@ public class AddToCart {
 			
 			Debug.Log("ShippingOptionUrl: " + shippingOptionUrl);
 			
-			HttpWebResponse getHttpResponse = SendHttpRequestToCortex.SendRequest(shippingOptionUrl, "GET", emptyJsonForm, AuthToken);
+			HttpWebResponse getHttpResponse = SendHttpRequestToCortex.SendGetRequest(shippingOptionUrl);
 			Debug.Log("GetResponse: " + SendHttpRequestToCortex.GetResponseBody(getHttpResponse));
 			
 			//send POST request to select shipping option
-			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(shippingOptionUrl, "POST", emptyJsonForm, AuthToken);
+			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendPostRequest(shippingOptionUrl, emptyJsonForm);
 			
 			Debug.Log(httpResponse.StatusCode);
 		}
@@ -190,19 +171,16 @@ public class AddToCart {
 		return url;
 	}
 	
-	public static Response GetOrderResponse (string orderUri, string AuthToken) {
+	public static Response GetOrderResponse (string orderUri) {
 		string url = orderUri;
-		
 		Debug.Log(url);
 		
-		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url, "GET", emptyJsonForm, AuthToken);
+		HttpWebResponse httpResponse = SendHttpRequestToCortex.SendGetRequest(url);
 		
 		string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
 	   	Debug.Log(responseJSON);
 		
-		Serializer responseSerializer = new Serializer(typeof(Response));
-		Response response = (Response) responseSerializer.Deserialize(responseJSON);
-		
+		Response response = (Response) RequestUtils.deserialize(responseJSON, typeof(Response));
 		return response;
 	}
 }
