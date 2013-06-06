@@ -16,8 +16,11 @@ class Main : MonoBehaviour
 	private string Password = "password";
 	public ResponseAuthentication auth = new ResponseAuthentication();
 	
+	
+	private static string authUrl = "http://10.10.121.110:8080/cortex/authentication/unity";
 	private string cortexServerUrl = "http://10.10.121.110:8080/cortex";
 	private string storeScope = "/unity";
+	
 	public int stage = 0;
 	
     CharacterGenerator generator;
@@ -31,7 +34,6 @@ class Main : MonoBehaviour
     const int typeWidth = 80;
     const int buttonWidth = 20;
     const string prefName = "Character Generator Demo Pref";
-	
 	public bool bodyUnlock = true;
 	public bool legUnlock = true;
 	public bool shoeUnlock = true;
@@ -227,55 +229,34 @@ class Main : MonoBehaviour
 		GUI.backgroundColor = Color.black;
 		GUI.Box(new Rect(Screen.width/2-110,Screen.height/2-100,300,140), "Welcome, Please Log In");
 		
-		//make login text fields
+		// Make login text fields
 		GUI.backgroundColor = Color.gray;
 		UserName = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-60, 200, 20),UserName, 50);
 		//Password = GUI.TextField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password, 50);
 		Password = GUI.PasswordField(new Rect(Screen.width/2-60, Screen.height/2-30, 200, 20),Password,"*"[0], 50);
 		
 		// Make the first button. 
-		if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login"))
-		{
+		if (GUI.Button(new Rect(Screen.width/2,Screen.height/2,80,20), "Login")) {
+			// Create a request object
 			RequestUser user = new RequestUser();				
 			user.username = UserName;
 			user.password = Password;
-			
-			//Debug.Log(UserName);
-			//Debug.Log("access_token: " + auth.access_token);
-			
-		    // serialize to a string
-		    Serializer userSerializer = new Serializer(typeof(RequestUser));
-		    string jsonText = userSerializer.Serialize(user);
-			
-			//Get params for Cortex reequest
-			string url = cortexServerUrl + "/authentication" + storeScope;
-			string authToken = auth.access_token;
-			
-			//Debug.Log(jsonText);
-			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendRequest(url,"POST",jsonText,authToken);
-			
-			Debug.Log(httpResponse.StatusCode);
-			/*
-			users.Add("user");
-			users.Add("123");
 
-			//if (UserName=="user" && Password == "123")
-			*/
-			if(httpResponse.StatusCode == HttpStatusCode.OK)
-			{
-				stage = 1; 
-				//get AuthToken
+			// Serialize to a string
+			string jsonText = RequestUtils.serialize(user, typeof(RequestUser));
+			
+			HttpWebResponse httpResponse = SendHttpRequestToCortex.SendPostRequest(authUrl,jsonText);
+			Debug.Log(httpResponse.StatusCode);
+
+			if (httpResponse.StatusCode == HttpStatusCode.OK) {
+				// Change application behavior once authenticated
+				stage = 1;
+				
+				// Get JSON string from response
 				string responseJSON = SendHttpRequestToCortex.GetResponseBody(httpResponse);
-				//Debug.Log(responseJSON);
 				
-	   			Serializer authSerializer = new Serializer(typeof(ResponseAuthentication));
-				auth = (ResponseAuthentication) authSerializer.Deserialize(responseJSON);
-				
-				//Debug.Log("access_token: " + auth.access_token);
-			}
-			else
-			{
-				//stage = 0;
+				auth = (ResponseAuthentication) RequestUtils.deserialize(responseJSON, typeof(ResponseAuthentication));
+			} else {
 				GUI.Box(new Rect(Screen.width/2+30,Screen.height/2+30,80,20), "Invalid Password, Please try Again");
 			}
 		}
